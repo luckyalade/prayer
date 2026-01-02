@@ -40,11 +40,12 @@ export function InfoModal({ isOpen, onClose }: InfoModalProps) {
             <X className="w-6 h-6 stroke-3" />
           </button>
 
-          <div className="space-y-6 pt-2 font-serif text-lg leading-relaxed text-black">
+          <div className="space-y-6 pt-2 font-serif text-md leading-relaxed text-black">
             <p>
               when you submit your prayer, we will digitally encrypt it so it is
               never read. we will provide a 10 digit code that will give you
-              access to your prayer on January 1st, 2027.
+              access to your prayer on the 1st day of each month. On January
+              1st, 2027, all prayers will be deleted in place for new ones.
             </p>
 
             <p>
