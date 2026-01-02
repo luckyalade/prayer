@@ -69,7 +69,7 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
   const [retrieveCode, setRetrieveCode] = useState("");
   const [retrievedPrayer, setRetrievedPrayer] = useState("");
   const [error, setError] = useState("");
-  const [savedScrollPosition, setSavedScrollPosition] = useState("24px");
+  const [savedScrollPosition, setSavedScrollPosition] = useState(0);
 
   const handleSubmit = () => {
     if (!prayerText.trim()) return;
