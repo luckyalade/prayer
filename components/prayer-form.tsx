@@ -350,6 +350,7 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
             onModeChange?.(newMode);
             setAccessCode("");
             setCopied(false);
+            setPrayerText(""); // Clear prayer text when going back
           }}
           className="cursor-pointer mt-6 text-black text-sm lowercase hover:text-black transition-colors"
         >
@@ -411,7 +412,7 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
             setMode(newMode);
             onModeChange?.(newMode);
           }}
-          className="mt-4 text-black text-sm lowercase hover:text-black transition-colors cursor-pointer"
+          className="hidden mt-4 text-black text-sm lowercase hover:text-black transition-colors cursor-pointer"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2, delay: 0.6 }}

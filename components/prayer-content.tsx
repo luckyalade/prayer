@@ -24,21 +24,23 @@ export function PrayerContent() {
   return (
     <>
       <section className="flex flex-col items-center justify-center backdrop-blur-sm relative -top-12">
-        <motion.h1
-          className="text-5xl md:text-6xl text-black font-semibold shadow-md shadow-transparent "
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2, delay: 1.2 }}
-        >
-          2026 Prayer
-        </motion.h1>
+        {!showTextarea && (
+          <motion.h1
+            className="text-5xl md:text-6xl text-black font-semibold shadow-md shadow-transparent "
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2, delay: 1.2 }}
+          >
+            2026 Prayer
+          </motion.h1>
+        )}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2, delay: 1.4 }}
         >
           <PrayerForm
-            onModeChange={(mode) => setShowTextarea(mode === "submit")}
+            onModeChange={(mode) => setShowTextarea(mode !== "initial")}
           />
         </motion.div>
       </section>
