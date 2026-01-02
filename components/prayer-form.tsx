@@ -15,11 +15,10 @@ const isIOS = () => {
   );
 };
 
-// Check if access date has passed (January 1st, 2027)
+// Check if today is the 1st of the month
 function canAccessPrayer(): boolean {
-  const accessDate = new Date("2027-01-01T00:00:00.000Z");
   const now = new Date();
-  return now >= accessDate;
+  return now.getDate() === 1;
 }
 
 // Generate a unique 10-digit access code
@@ -116,10 +115,10 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
         return;
       }
 
-      // Check if access date has passed
+      // Check if today is the 1st of the month
       if (!canAccessPrayer()) {
         setIsLoading(false);
-        setError("your prayer will be available on January 1st, 2027.");
+        setError("your prayer can only be viewed on the 1st of each month.");
         return;
       }
 
@@ -224,16 +223,18 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
         >
           Enter
         </button>
-        {/* <button
-          onClick={() => {
-            const newMode = "retrieve";
-            setMode(newMode);
-            onModeChange?.(newMode);
-          }}
-          className="mt-4 text-black text-md lowercase hover:text-black transition-colors cursor-pointer"
-        >
-          Have a code? Access your prayer
-        </button> */}
+        {canAccessPrayer() && (
+          <button
+            onClick={() => {
+              const newMode = "retrieve";
+              setMode(newMode);
+              onModeChange?.(newMode);
+            }}
+            className="mt-4 text-black text-md lowercase hover:text-black transition-colors cursor-pointer"
+          >
+            Have a code? Access your prayer
+          </button>
+        )}
       </div>
     );
   }
@@ -283,7 +284,7 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
         <button
           onClick={handleRetrieve}
           disabled={retrieveCode.length !== 10 || isLoading}
-          className="mt-4 text-black text-lg lowercase hover:opacity-70 transition-opacity disabled:opacity-30 disabled:cursor-not-allowed"
+          className="mt-4 cursor-pointer text-black text-lg lowercase hover:opacity-70 transition-opacity disabled:opacity-30 disabled:cursor-not-allowed"
         >
           {isLoading ? "loading..." : "access prayer"}
         </button>
