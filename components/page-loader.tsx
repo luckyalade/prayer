@@ -42,11 +42,11 @@ export function PageLoader() {
         {/* Loading spinner */}
         <div className="relative w-16 h-16">
           <div className="absolute inset-0 border-4 border-gray-200 rounded-full"></div>
-          <div className="absolute inset-0 border-4 border-transparent border-t-gray-800 rounded-full animate-spin"></div>
+          <div className="absolute inset-0 border-4 border-transparent border-t-purple-700 rounded-full animate-spin"></div>
         </div>
 
         {/* Loading text */}
-        <p className="mt-6 text-gray-800 text-md font-light tracking-wider animate-fade-in-out">
+        <p className="mt-6 text-black text-md font-normal tracking-wider animate-fade-in-out">
           loading your prayers...
         </p>
       </div>

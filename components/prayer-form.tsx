@@ -69,6 +69,7 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
   const [retrieveCode, setRetrieveCode] = useState("");
   const [retrievedPrayer, setRetrievedPrayer] = useState("");
   const [error, setError] = useState("");
+  const [savedScrollPosition, setSavedScrollPosition] = useState("24px");
 
   const handleSubmit = () => {
     if (!prayerText.trim()) return;
@@ -229,7 +230,7 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
             setMode(newMode);
             onModeChange?.(newMode);
           }}
-          className="mt-4 text-black/80 text-md lowercase hover:text-black transition-colors cursor-pointer"
+          className="mt-4 text-black text-md lowercase hover:text-black transition-colors cursor-pointer"
         >
           Have a code? Access your prayer
         </button>
@@ -240,7 +241,12 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
   // Retrieve mode - enter code to access prayer
   if (mode === "retrieve") {
     return (
-      <div className="flex flex-col items-center animate-in fade-in duration-500 mt-8">
+      <motion.div
+        className="flex flex-col items-center mt-8"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.2 }}
+      >
         <p className="text-black text-lg mb-6">enter your 10-digit code</p>
         <input
           type="text"
@@ -250,6 +256,24 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
             const value = e.target.value.replace(/\D/g, "").slice(0, 10);
             setRetrieveCode(value);
             setError("");
+          }}
+          onFocus={() => {
+            // Save current scroll position before keyboard appears
+            if (isIOS()) {
+              setSavedScrollPosition(window.scrollY || window.pageYOffset);
+            }
+          }}
+          onBlur={() => {
+            // Restore scroll position after keyboard dismisses on iOS
+            if (isIOS()) {
+              // Give time for keyboard to fully dismiss
+              setTimeout(() => {
+                window.scrollTo({
+                  top: savedScrollPosition,
+                  behavior: "smooth",
+                });
+              }, 300);
+            }
           }}
           placeholder="0000000000"
           className="w-[300px] border border-black rounded-full py-3 px-6 text-center text-black text-lg tracking-wider bg-transparent focus:outline-none focus:ring-1 focus:ring-black/20"
@@ -271,11 +295,11 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
             setRetrieveCode("");
             setError("");
           }}
-          className="mt-4 text-black text-sm lowercase hover:text-black transition-colors"
+          className="cursor-pointer mt-4 text-black text-sm lowercase hover:text-black transition-colors"
         >
           go back
         </button>
-      </div>
+      </motion.div>
     );
   }
 
@@ -295,7 +319,7 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
             setRetrieveCode("");
             setRetrievedPrayer("");
           }}
-          className="mt-6 text-black text-sm lowercase hover:text-black transition-colors"
+          className="cursor-pointer mt-6 text-black text-sm lowercase hover:text-black transition-colors"
         >
           go back
         </button>
@@ -349,7 +373,7 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
           </p>
           <button
             onClick={() => setShowInfoModal(true)}
-            className="text-black hover:opacity-70 transition-opacity mt-4"
+            className="text-black hover:opacity-70 transition-opacity mt-4 cursor-pointer"
           >
             <Info className="w-4 h-4" />
           </button>

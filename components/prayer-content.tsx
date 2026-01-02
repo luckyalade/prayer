@@ -25,7 +25,7 @@ export function PrayerContent() {
     <>
       <section className="flex flex-col items-center justify-center backdrop-blur-sm relative -top-12">
         <motion.h1
-          className="text-5xl md:text-6xl text-black shadow-md shadow-transparent "
+          className="text-5xl md:text-6xl text-black font-semibold shadow-md shadow-transparent "
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2, delay: 1.2 }}
@@ -54,7 +54,7 @@ export function PrayerContent() {
           href="https://www.instagram.com/paul_the_simple"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-black text-lg "
+          className="text-black font-semibold text-lg "
         >
           created by paul the simple
         </a>
@@ -69,7 +69,7 @@ export function PrayerContent() {
           href="https://www.instagram.com/paul_the_simple"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-black text-lg "
+          className="text-black font-semibold text-lg"
         >
           created by paul the simple
         </a>
