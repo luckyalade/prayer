@@ -7,9 +7,9 @@ import { motion } from "framer-motion";
 export function PrayerContent() {
   const [showTextarea, setShowTextarea] = useState(false);
 
-  // Hide scroll behavior when textarea is not displaying
+  // Hide scroll behavior when textarea is displaying
   useEffect(() => {
-    if (!showTextarea) {
+    if (showTextarea) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
@@ -46,7 +46,7 @@ export function PrayerContent() {
       </section>
       <motion.footer
         className={`${
-          showTextarea ? "relative" : "fixed"
+          showTextarea ? "fixed" : "relative"
         } bottom-2 w-fit text-center backdrop-blur-sm shadow-2xl md:hidden`}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
