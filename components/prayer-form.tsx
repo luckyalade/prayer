@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Info } from "lucide-react";
 import { InfoModal } from "./info-modal";
 import { motion } from "framer-motion";
+import { savePrayer, getPrayer } from "../lib/firestore-service";
 
 // Detect iOS devices
 const isIOS = () => {
@@ -70,41 +71,57 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
   const [retrievedPrayer, setRetrievedPrayer] = useState("");
   const [error, setError] = useState("");
   const [savedScrollPosition, setSavedScrollPosition] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = () => {
-    if (!prayerText.trim()) return;
+  const handleSubmit = async () => {
+    if (!prayerText.trim() || isLoading) return;
 
-    // Generate unique 10-digit access code
-    const code = generateAccessCode();
-    setAccessCode(code);
+    setIsLoading(true);
+    setError("");
 
-    // Encrypt and store the prayer
-    const encryptedPrayer = encryptPrayer(prayerText);
+    try {
+      // Generate unique 10-digit access code
+      const code = generateAccessCode();
+      setAccessCode(code);
 
-    // Store in localStorage with the code as key
-    localStorage.setItem(`prayer_${code}`, encryptedPrayer);
+      // Encrypt and store the prayer
+      const encryptedPrayer = encryptPrayer(prayerText);
 
-    // Dismiss the keyboard
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur();
+      // Save to Firestore
+      await savePrayer(code, encryptedPrayer);
+
+      // Dismiss the keyboard
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+
+      // iOS needs extra time for keyboard dismissal and viewport stabilization
+      const delay = isIOS() ? 400 : 0;
+
+      setTimeout(() => {
+        // Scroll to top after keyboard is dismissed
+        window.scrollTo({ top: 0, behavior: "instant" });
+
+        requestAnimationFrame(() => {
+          const newMode = "submitted";
+          setMode(newMode);
+          onModeChange?.(newMode);
+          setIsLoading(false);
+        });
+      }, delay);
+    } catch (err) {
+      setIsLoading(false);
+      setError(
+        err instanceof Error
+          ? err.message
+          : "failed to save your prayer. please try again."
+      );
     }
-
-    // iOS needs extra time for keyboard dismissal and viewport stabilization
-    const delay = isIOS() ? 400 : 0;
-
-    setTimeout(() => {
-      // Scroll to top after keyboard is dismissed
-      window.scrollTo({ top: 0, behavior: "instant" });
-
-      requestAnimationFrame(() => {
-        const newMode = "submitted";
-        setMode(newMode);
-        onModeChange?.(newMode);
-      });
-    }, delay);
   };
 
-  const handleRetrieve = () => {
+  const handleRetrieve = async () => {
+    if (isLoading) return;
+
     setError("");
 
     // Validate code format (10 digits)
@@ -113,45 +130,61 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
       return;
     }
 
-    // Try to retrieve from localStorage first
-    const encrypted = localStorage.getItem(`prayer_${retrieveCode}`);
-    if (!encrypted) {
-      setError("no prayer found with this code.");
-      return;
+    setIsLoading(true);
+
+    try {
+      // Retrieve from Firestore
+      const encrypted = await getPrayer(retrieveCode);
+
+      if (!encrypted) {
+        setIsLoading(false);
+        setError("no prayer found with this code.");
+        return;
+      }
+
+      // Check if access date has passed
+      if (!canAccessPrayer()) {
+        setIsLoading(false);
+        setError("your prayer will be available on January 1st, 2027.");
+        return;
+      }
+
+      const decrypted = decryptPrayer(encrypted);
+      if (!decrypted) {
+        setIsLoading(false);
+        setError("could not decrypt your prayer.");
+        return;
+      }
+
+      setRetrievedPrayer(decrypted.prayer);
+
+      // Dismiss the keyboard
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+
+      // iOS needs extra time for keyboard dismissal and viewport stabilization
+      const delay = isIOS() ? 400 : 0;
+
+      setTimeout(() => {
+        // Scroll to top after keyboard is dismissed
+        window.scrollTo({ top: 0, behavior: "instant" });
+
+        requestAnimationFrame(() => {
+          const newMode = "retrieved";
+          setMode(newMode);
+          onModeChange?.(newMode);
+          setIsLoading(false);
+        });
+      }, delay);
+    } catch (err) {
+      setIsLoading(false);
+      setError(
+        err instanceof Error
+          ? err.message
+          : "failed to retrieve your prayer. please try again."
+      );
     }
-
-    // Check if access date has passed
-    if (!canAccessPrayer()) {
-      setError("your prayer will be available on January 1st, 2027.");
-      return;
-    }
-
-    const decrypted = decryptPrayer(encrypted);
-    if (!decrypted) {
-      setError("could not decrypt your prayer.");
-      return;
-    }
-
-    setRetrievedPrayer(decrypted.prayer);
-
-    // Dismiss the keyboard
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur();
-    }
-
-    // iOS needs extra time for keyboard dismissal and viewport stabilization
-    const delay = isIOS() ? 400 : 0;
-
-    setTimeout(() => {
-      // Scroll to top after keyboard is dismissed
-      window.scrollTo({ top: 0, behavior: "instant" });
-
-      requestAnimationFrame(() => {
-        const newMode = "retrieved";
-        setMode(newMode);
-        onModeChange?.(newMode);
-      });
-    }, delay);
   };
 
   const copyToClipboard = async () => {
@@ -224,7 +257,7 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
         >
           Enter
         </button>
-        <button
+        {/* <button
           onClick={() => {
             const newMode = "retrieve";
             setMode(newMode);
@@ -233,7 +266,7 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
           className="mt-4 text-black text-md lowercase hover:text-black transition-colors cursor-pointer"
         >
           Have a code? Access your prayer
-        </button>
+        </button> */}
       </div>
     );
   }
@@ -282,10 +315,10 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
         {error && <p className="mt-3 text-red-500 text-sm">{error}</p>}
         <button
           onClick={handleRetrieve}
-          disabled={retrieveCode.length !== 10}
+          disabled={retrieveCode.length !== 10 || isLoading}
           className="mt-4 text-black text-lg lowercase hover:opacity-70 transition-opacity disabled:opacity-30 disabled:cursor-not-allowed"
         >
-          access prayer
+          {isLoading ? "loading..." : "access prayer"}
         </button>
         <button
           onClick={() => {
@@ -378,6 +411,7 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
             <Info className="w-4 h-4" />
           </button>
         </motion.div>
+        {error && <p className="mt-2 mb-4 text-red-500 text-sm">{error}</p>}
 
         <motion.textarea
           value={prayerText}
@@ -390,9 +424,9 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
 
         <motion.button
           onClick={handleSubmit}
-          disabled={!prayerText.trim()}
+          disabled={!prayerText.trim() || isLoading}
           className={`mt-3  text-lg lowercase hover:opacity-70 transition-opacity disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer ${
-            !prayerText.trim()
+            !prayerText.trim() || isLoading
               ? "opacity-30 cursor-not-allowed text-black/50"
               : "text-black"
           }`}
@@ -400,7 +434,7 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2, delay: 0.4 }}
         >
-          submit
+          {isLoading ? "saving..." : "submit"}
         </motion.button>
 
         <motion.button

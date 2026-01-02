@@ -9,31 +9,34 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "prayer",
-  description: "2026 Prayer",
+  title: "2026 prayer",
+  description: "submit your prayer for 2026",
   viewport: {
     width: "device-width",
     initialScale: 1,
     interactiveWidget: "resizes-content",
   },
   openGraph: {
-    title: "prayer",
-    description: "2026 Prayer",
+    title: "2026 prayer",
+    description: "submit your prayer for 2026",
     images: [
       {
         url: "/prayer-ogp-1.png",
         width: 1200,
         height: 630,
-        alt: "prayer - 2026 Prayer",
+        alt: "2026 prayer",
       },
     ],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "prayer",
-    description: "2026 Prayer",
+    title: "2026 prayer",
+    description: "submit your prayer for 2026",
     images: ["/prayer-ogp-1.png"],
+  },
+  icons: {
+    icon: "/purp.png",
   },
 };
 
