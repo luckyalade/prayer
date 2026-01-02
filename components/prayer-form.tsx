@@ -15,29 +15,6 @@ const isIOS = () => {
   );
 };
 
-// Simple encryption function to store prayer with code
-function encryptPrayer(prayer: string): string {
-  // Convert prayer to base64 and store with timestamp for January 1st, 2027 access
-  const data = {
-    prayer,
-    accessDate: "2027-01-01T00:00:00.000Z",
-    createdAt: new Date().toISOString(),
-  };
-  return btoa(JSON.stringify(data));
-}
-
-// Decrypt prayer from stored data
-function decryptPrayer(
-  encrypted: string
-): { prayer: string; accessDate: string; createdAt: string } | null {
-  try {
-    const json = atob(encrypted);
-    return JSON.parse(json);
-  } catch {
-    return null;
-  }
-}
-
 // Check if access date has passed (January 1st, 2027)
 function canAccessPrayer(): boolean {
   const accessDate = new Date("2027-01-01T00:00:00.000Z");
@@ -84,11 +61,8 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
       const code = generateAccessCode();
       setAccessCode(code);
 
-      // Encrypt and store the prayer
-      const encryptedPrayer = encryptPrayer(prayerText);
-
-      // Save to Firestore
-      await savePrayer(code, encryptedPrayer);
+      // Save prayer as plain text to Firestore
+      await savePrayer(code, prayerText);
 
       // Dismiss the keyboard
       if (document.activeElement instanceof HTMLElement) {
@@ -134,9 +108,9 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
 
     try {
       // Retrieve from Firestore
-      const encrypted = await getPrayer(retrieveCode);
+      const prayerData = await getPrayer(retrieveCode);
 
-      if (!encrypted) {
+      if (!prayerData) {
         setIsLoading(false);
         setError("no prayer found with this code.");
         return;
@@ -149,14 +123,7 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
         return;
       }
 
-      const decrypted = decryptPrayer(encrypted);
-      if (!decrypted) {
-        setIsLoading(false);
-        setError("could not decrypt your prayer.");
-        return;
-      }
-
-      setRetrievedPrayer(decrypted.prayer);
+      setRetrievedPrayer(prayerData.prayer);
 
       // Dismiss the keyboard
       if (document.activeElement instanceof HTMLElement) {

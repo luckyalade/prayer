@@ -7,15 +7,21 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
+export interface PrayerData {
+  prayer: string;
+  accessDate: string;
+  createdAt: string;
+}
+
 /**
- * Save encrypted prayer data to Firestore
+ * Save prayer data to Firestore (stored as plain text)
  * @param code - 10-digit access code (used as document ID)
- * @param encryptedData - Encrypted prayer data
+ * @param prayerText - The prayer text
  * @returns Promise that resolves when save is complete
  */
 export async function savePrayer(
   code: string,
-  encryptedData: string
+  prayerText: string
 ): Promise<void> {
   try {
     const prayersCollection = collection(db, "prayers");
@@ -23,7 +29,9 @@ export async function savePrayer(
 
     await setDoc(prayerDoc, {
       code,
-      encrypted: encryptedData,
+      prayer: prayerText,
+      accessDate: "2027-01-01T00:00:00.000Z",
+      userCreatedAt: new Date().toISOString(),
       createdAt: serverTimestamp(),
     });
   } catch (error) {
@@ -35,11 +43,11 @@ export async function savePrayer(
 }
 
 /**
- * Retrieve encrypted prayer data from Firestore
+ * Retrieve prayer data from Firestore
  * @param code - 10-digit access code
- * @returns Encrypted prayer data or null if not found
+ * @returns Prayer data or null if not found
  */
-export async function getPrayer(code: string): Promise<string | null> {
+export async function getPrayer(code: string): Promise<PrayerData | null> {
   try {
     const prayersCollection = collection(db, "prayers");
     const prayerDoc = doc(prayersCollection, code);
@@ -48,7 +56,11 @@ export async function getPrayer(code: string): Promise<string | null> {
 
     if (docSnapshot.exists()) {
       const data = docSnapshot.data();
-      return data.encrypted || null;
+      return {
+        prayer: data.prayer || "",
+        accessDate: data.accessDate || "2027-01-01T00:00:00.000Z",
+        createdAt: data.userCreatedAt || data.createdAt,
+      };
     }
 
     return null;
