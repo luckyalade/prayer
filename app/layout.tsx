@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: "2026 Prayer",
     images: [
       {
-        url: "/prayer-ogp.png",
+        url: "/prayer-ogp-1.png",
         width: 1200,
         height: 630,
         alt: "prayer - 2026 Prayer",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "prayer",
     description: "2026 Prayer",
-    images: ["/prayer-ogp.png"],
+    images: ["/prayer-ogp-1.png"],
   },
 };
 
