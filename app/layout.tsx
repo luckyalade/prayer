@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { PageLoader } from "@/components/page-loader";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
 
 const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
@@ -49,7 +51,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={` ${instrumentSerif.className} antialiased`}>
         <PageLoader />
+        <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );

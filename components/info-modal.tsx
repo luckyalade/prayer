@@ -42,18 +42,20 @@ export function InfoModal({ isOpen, onClose }: InfoModalProps) {
 
           <div className="space-y-6 pt-2 font-serif text-md leading-relaxed text-black">
             <p>
-              when you submit your prayer, we will digitally encrypt it so it is
-              never read. we will provide a 10 digit code that will give you
-              access to your prayer on the 1st day of each month. On January
-              1st, 2027, all prayers will be deleted in place for new ones.
+              every prayer is encrypted and sent into the orb as a color
+              pigment. collectively, each prayer will shift the color we create
+              in the orb. in mid 2026, we will extract 10,000 prayers from the
+              orb and create a physical installation with them.
             </p>
-
             <p>
-              The purpose of this project is to give us a space to envision
-              whats possible, and imagine a canvas for it. what if these dreams
-              and prayers become a collective idea over time? what if next
-              year&apos;s prayer assumes we achieved our goals for this
-              year&apos;s prayer?
+              when you submit a prayer, you will be given a 10 digit code to
+              access this prayer on the 1st day of every month as a reminder of
+              your wish.
+            </p>
+            <p>
+              On January 1st, 2027, all prayers will be deleted in place for new
+              ones. 2026prayer is a bamtone project; as we are always in search
+              of new colors and the methods for creating them.
             </p>
           </div>
         </div>

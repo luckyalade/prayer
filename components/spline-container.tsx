@@ -16,11 +16,13 @@ export function SplineContainer({ children }: SplineContainerProps) {
       className="cursor-pointer"
       style={{
         width: "100%",
-        maxWidth: "650px",
-        height: isMobile ? "440px" : "340px",
+        maxWidth: "300px",
+        height: isMobile ? "300px" : "300px",
         margin: "0 auto",
-        position: "relative",
-        top: "-36px",
+        position: "fixed",
+        top: "-20px",
+        left: "50%",
+        transform: "translateX(-50%)",
       }}
     >
       {children}
