@@ -55,7 +55,7 @@ export function InfoModal({ isOpen, onClose }: InfoModalProps) {
             />
           </svg>
           {/* Static border */}
-          <div className="absolute inset-0 border border-black rounded-[30px] pointer-events-none" />
+          <div className="absolute inset-0 border border-black/60 rounded-[30px] pointer-events-none" />
 
           <button
             onClick={onClose}

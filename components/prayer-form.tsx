@@ -425,7 +425,7 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
                 window.scrollTo(0, parseInt(scrollY || "0") * -1);
               }
             }}
-            className="w-full h-full border border-black rounded-[20px] p-4 bg-transparent text-black resize-none focus:outline-none"
+            className="w-full h-full border border-black/60 rounded-[20px] p-4 bg-transparent text-black resize-none focus:outline-none"
           />
         </div>
 
