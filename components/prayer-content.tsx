@@ -7,44 +7,36 @@ import { motion } from "framer-motion";
 export function PrayerContent() {
   const [showTextarea, setShowTextarea] = useState(false);
 
-  // Hide scroll behavior when textarea is not displaying
+  // Keep overflow hidden at all times to prevent scrolling
   useEffect(() => {
-    if (!showTextarea) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow = "hidden";
 
     // Cleanup on unmount
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [showTextarea]);
+  }, []);
 
   return (
     <>
-      <section className="flex flex-col items-center justify-center backdrop-blur-sm relative -top-12">
+      <motion.section
+        className="flex flex-col items-center justify-center backdrop-blur-sm relative -top-12 pro-max:-top-20 md:-top-12"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 1.5, ease: "easeIn" }}
+      >
         {!showTextarea && (
-          <motion.h1
-            className="text-5xl md:text-6xl text-black font-semibold shadow-md shadow-transparent "
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.2, delay: 1.2 }}
-          >
+          <h1 className="text-5xl md:text-6xl text-black font-semibold shadow-md shadow-transparent ">
             2026 Prayer
-          </motion.h1>
+          </h1>
         )}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2, delay: 1.4 }}
-        >
+        <div>
           <PrayerForm
             onModeChange={(mode) => setShowTextarea(mode !== "initial")}
           />
-        </motion.div>
-      </section>
-      <motion.footer
+        </div>
+      </motion.section>
+      {/* <motion.footer
         className={`${
           showTextarea ? "relative" : "fixed"
         } bottom-2 w-fit text-center backdrop-blur-sm shadow-2xl md:hidden`}
@@ -60,12 +52,12 @@ export function PrayerContent() {
         >
           created by paul the simple
         </a>
-      </motion.footer>
+      </motion.footer> */}
       <motion.footer
-        className="fixed bottom-2 w-fit text-center backdrop-blur-sm shadow-2xl hidden md:block"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.2, delay: 1.6 }}
+        className="fixed bottom-2 w-fit text-center backdrop-blur-sm shadow-2xl"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 1.5, ease: "easeIn" }}
       >
         <a
           href="https://www.instagram.com/paul_the_simple"

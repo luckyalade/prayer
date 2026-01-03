@@ -363,13 +363,13 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
   // Submit mode - show the prayer form
   return (
     <>
-      <div className="flex flex-col items-center animate-in fade-in duration-500">
-        <motion.div
-          className="flex items-center gap-2 mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2 }}
-        >
+      <motion.div
+        className="flex flex-col items-center "
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, ease: "easeIn" }}
+      >
+        <div className="flex items-center gap-2 mb-8">
           <p className="text-black text-lg mt-4">
             submit your prayer for 2026.
           </p>
@@ -379,19 +379,34 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
           >
             <Info className="w-4 h-4" />
           </button>
-        </motion.div>
+        </div>
         {error && <p className="mt-2 mb-4 text-red-500 text-sm">{error}</p>}
 
-        <motion.textarea
+        <textarea
           value={prayerText}
           onChange={(e) => setPrayerText(e.target.value)}
-          className="w-[300px] h-[200px] pro-max:w-[600px] pro-max:h-[400px] border-2 border-black rounded-[20px] p-4 bg-transparent text-black resize-none focus:outline-none focus:ring-1 focus:ring-black/20"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2, delay: 0.2 }}
+          onFocus={() => {
+            // Save current scroll position before keyboard appears
+            if (isIOS()) {
+              setSavedScrollPosition(window.scrollY || window.pageYOffset);
+            }
+          }}
+          onBlur={() => {
+            // Restore scroll position after keyboard dismisses on iOS
+            if (isIOS()) {
+              // Give time for keyboard to fully dismiss
+              setTimeout(() => {
+                window.scrollTo({
+                  top: savedScrollPosition,
+                  behavior: "smooth",
+                });
+              }, 300);
+            }
+          }}
+          className="w-[300px] h-[200px] pro-max:w-[350px] border-2 border-black rounded-[20px] p-4 bg-transparent text-black resize-none focus:outline-none focus:ring-1 focus:ring-black/20"
         />
 
-        <motion.button
+        <button
           onClick={handleSubmit}
           disabled={!prayerText.trim() || isLoading}
           className={`mt-3  text-lg lowercase hover:opacity-70 transition-opacity disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer ${
@@ -399,27 +414,21 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
               ? "opacity-30 cursor-not-allowed text-black/50"
               : "text-black"
           }`}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2, delay: 0.4 }}
         >
           {isLoading ? "saving..." : "submit"}
-        </motion.button>
+        </button>
 
-        <motion.button
+        <button
           onClick={() => {
             const newMode = "initial";
             setMode(newMode);
             onModeChange?.(newMode);
           }}
           className="hidden mt-4 text-black text-sm lowercase hover:text-black transition-colors cursor-pointer"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2, delay: 0.6 }}
         >
           go back
-        </motion.button>
-      </div>
+        </button>
+      </motion.div>
 
       <InfoModal
         isOpen={showInfoModal}
