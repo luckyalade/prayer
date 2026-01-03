@@ -24,10 +24,10 @@ export function InfoModal({ isOpen, onClose }: InfoModalProps) {
       <motion.div
         className=" fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm p-4"
         onClick={onClose}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        exit={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3, ease: "easeIn" }}
+        exit={{ opacity: 0 }}
       >
         <div
           className="relative w-full max-w-[500px] bg-white border border-black rounded-[30px] p-8 shadow-xl animate-in fade-in zoom-in-95 duration-200"
@@ -37,7 +37,7 @@ export function InfoModal({ isOpen, onClose }: InfoModalProps) {
             onClick={onClose}
             className="absolute right-6 top-6 text-black hover:opacity-70 transition-opacity"
           >
-            <X className="w-6 h-6 stroke-3" />
+            <X className="w-6 h-6 stroke-3 cursor-pointer" />
           </button>
 
           <div className="space-y-6 pt-2 font-serif text-md leading-relaxed text-black">
