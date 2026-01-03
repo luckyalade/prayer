@@ -513,7 +513,7 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
 
       {showColorPicker && (
         <motion.div
-          className="fixed -top-[195px] pro-max:-top-44 md:-top-48 left-1/2 w-full max-w-md -translate-x-1/2 z-50 flex items-center justify-center bg-white/20 backdrop-blur-sm font-sans"
+          className="fixed -top-[195px] pro-max:-top-44 md:-top-48 left-1/2 w-full max-w-md -translate-x-1/2 z-50 flex items-center justify-center bg-white/20 backdrop-blur-sm "
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           onClick={() => setShowColorPicker(false)}
@@ -540,9 +540,9 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
               <h2 className="text-lg font-extrabold tracking-normal text-black mb-1.5 uppercase">
                 Pick a Color
               </h2>
-              <p className="text-sm text-black">
+              {/* <p className="text-sm text-black">
                 Choose your perfect shade manually.
-              </p>
+              </p> */}
             </div>
 
             {/* Color Picker */}
@@ -603,7 +603,7 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
                          text-white shadow-md transition
                          hover:bg-black/80 cursor-pointer"
             >
-              MANUALLY CHOOSE A COLOR
+              CHOOSE THIS COLOR
             </button>
           </motion.div>
         </motion.div>
