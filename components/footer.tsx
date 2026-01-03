@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 export function Footer() {
   return (
     <motion.footer
-      className="fixed bottom-2 left-1/2 -translate-x-1/2 w-fit text-center backdrop-blur-sm shadow-2xl z-50"
+      className="fixed bottom-2 left-1/2 -translate-x-1/2 w-fit text-center backdrop-blur-sm"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5, delay: 1.5, ease: "easeIn" }}

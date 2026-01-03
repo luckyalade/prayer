@@ -11,6 +11,7 @@ export interface PrayerData {
   prayer: string;
   accessDate: string;
   createdAt: string;
+  color?: string;
 }
 
 /**
@@ -21,7 +22,8 @@ export interface PrayerData {
  */
 export async function savePrayer(
   code: string,
-  prayerText: string
+  prayerText: string,
+  color?: string
 ): Promise<void> {
   try {
     const prayersCollection = collection(db, "prayers");
@@ -33,6 +35,7 @@ export async function savePrayer(
       accessDate: "2027-01-01T00:00:00.000Z",
       userCreatedAt: new Date().toISOString(),
       createdAt: serverTimestamp(),
+      ...(color && { color }),
     });
   } catch (error) {
     console.error("Error saving prayer to Firestore:", error);
@@ -60,6 +63,7 @@ export async function getPrayer(code: string): Promise<PrayerData | null> {
         prayer: data.prayer || "",
         accessDate: data.accessDate || "2027-01-01T00:00:00.000Z",
         createdAt: data.userCreatedAt || data.createdAt,
+        color: data.color,
       };
     }
 

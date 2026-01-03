@@ -17,8 +17,8 @@ export function AnimatedPage() {
       <main
         className={`absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl flex flex-col items-center justify-center z-10 ${
           isEnterClicked
-            ? "top-[400px] pro-max:top-[420px] md:top-[400px]"
-            : "top-[310px] pro-max:top-[340px] md:top-[320px]"
+            ? "top-[420px] pro-max:top-[420px] md:top-[420px]"
+            : "top-[320px] pro-max:top-[340px] md:top-[320px]"
         }`}
       >
         <PrayerContent
