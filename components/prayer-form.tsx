@@ -381,29 +381,53 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
         </div>
         {error && <p className="mt-2 mb-4 text-red-500 text-sm">{error}</p>}
 
-        <textarea
-          value={prayerText}
-          onChange={(e) => setPrayerText(e.target.value)}
-          onFocus={() => {
-            // Lock viewport position on iOS to prevent scrolling
-            if (isIOS()) {
-              document.body.style.position = "fixed";
-              document.body.style.top = `-${window.scrollY}px`;
-              document.body.style.width = "100%";
-            }
-          }}
-          onBlur={() => {
-            // Unlock viewport on iOS
-            if (isIOS()) {
-              const scrollY = document.body.style.top;
-              document.body.style.position = "";
-              document.body.style.top = "";
-              document.body.style.width = "";
-              window.scrollTo(0, parseInt(scrollY || "0") * -1);
-            }
-          }}
-          className="w-[300px] h-[200px] pro-max:w-[350px] border-2 border-black rounded-[20px] p-4 bg-transparent text-black resize-none focus:outline-none focus:ring-1 focus:ring-black/20"
-        />
+        <div className="relative w-[300px] h-[200px] pro-max:w-[350px]">
+          {/* Animated border SVG */}
+          <svg
+            className="absolute inset-0 w-full h-full pointer-events-none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              x="1"
+              y="1"
+              width="calc(100% - 2px)"
+              height="calc(100% - 2px)"
+              rx="20"
+              ry="20"
+              fill="none"
+              stroke="#9333ea"
+              strokeWidth="2"
+              strokeDasharray="60 1000"
+              style={{
+                animation: "dash-textarea 10s linear infinite",
+              }}
+            />
+          </svg>
+          {/* Static border */}
+          <textarea
+            value={prayerText}
+            onChange={(e) => setPrayerText(e.target.value)}
+            onFocus={() => {
+              // Lock viewport position on iOS to prevent scrolling
+              if (isIOS()) {
+                document.body.style.position = "fixed";
+                document.body.style.top = `-${window.scrollY}px`;
+                document.body.style.width = "100%";
+              }
+            }}
+            onBlur={() => {
+              // Unlock viewport on iOS
+              if (isIOS()) {
+                const scrollY = document.body.style.top;
+                document.body.style.position = "";
+                document.body.style.top = "";
+                document.body.style.width = "";
+                window.scrollTo(0, parseInt(scrollY || "0") * -1);
+              }
+            }}
+            className="w-full h-full border border-black/60 rounded-[20px] p-4 bg-transparent text-black resize-none focus:outline-none"
+          />
+        </div>
 
         <button
           onClick={handleSubmit}

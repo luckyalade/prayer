@@ -83,3 +83,23 @@ body {
 .animate-pulse-slow {
   animation: pulse-slow 3s ease-in-out infinite;
 }
+
+/* Loader-style border animation for textarea */
+@keyframes dash-textarea {
+  0% {
+    stroke-dashoffset: 1060;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Loader-style border animation for modal */
+@keyframes dash-modal {
+  0% {
+    stroke-dashoffset: 2080;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}

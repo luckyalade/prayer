@@ -30,9 +30,33 @@ export function InfoModal({ isOpen, onClose }: InfoModalProps) {
         exit={{ opacity: 0 }}
       >
         <div
-          className="relative w-full max-w-[500px] bg-white border border-black rounded-[30px] p-8 shadow-xl animate-in fade-in zoom-in-95 duration-200"
+          className="relative w-full max-w-[500px] bg-white rounded-[30px] p-8 shadow-xl animate-in fade-in zoom-in-95 duration-200"
           onClick={(e) => e.stopPropagation()}
         >
+          {/* Animated border SVG */}
+          <svg
+            className="absolute inset-0 w-full h-full pointer-events-none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              x="1"
+              y="1"
+              width="calc(100% - 2px)"
+              height="calc(100% - 2px)"
+              rx="30"
+              ry="30"
+              fill="none"
+              stroke="#9333ea"
+              strokeWidth="2"
+              strokeDasharray="80 2000"
+              style={{
+                animation: "dash-modal 10s linear infinite",
+              }}
+            />
+          </svg>
+          {/* Static border */}
+          <div className="absolute inset-0 border border-black/60 rounded-[30px] pointer-events-none" />
+
           <button
             onClick={onClose}
             className="absolute right-6 top-6 text-black hover:opacity-70 transition-opacity"
