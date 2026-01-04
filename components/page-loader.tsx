@@ -47,7 +47,7 @@ export function PageLoader() {
 
         {/* Loading text */}
         <p className="mt-6 text-black text-md font-normal tracking-wider animate-fade-in-out">
-          flying upward...
+          connecting to the orb...
         </p>
       </div>
     </div>

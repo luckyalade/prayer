@@ -573,6 +573,7 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
                       boxShadow: "none",
                       borderRadius: "12px",
                       width: "100%",
+                      color: "black",
                     },
                   },
                 }}
