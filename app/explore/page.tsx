@@ -174,11 +174,13 @@ export default function ExplorePage() {
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="w-44 h-44 pro-max:w-50 pro-max:h-50 md:w-55 md:h-55 rounded-full mb-8 cursor-pointer"
+          transition={{ duration: 0.6 }}
+          whileTap={{ scale: 0.7 }}
+          className="w-44 h-44 pro-max:w-50 pro-max:h-50 md:w-55 md:h-55 rounded-full mb-8 cursor-pointer select-none"
           onClick={triggerConfetti}
           style={{
             backgroundColor: dailyPrayer?.color || "#D1D5DB",
+            touchAction: "manipulation",
           }}
         />
 
