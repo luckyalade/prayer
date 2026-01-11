@@ -187,7 +187,7 @@ export default function ExplorePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.6 }}
-          className="prayer-scroll text-center text-base pro-max:text-[17px] md:text-base text-black leading-relaxed mb-16 max-w-sm w-full max-h-64 overflow-y-auto px-4"
+          className="prayer-scroll text-center text-base pro-max:text-[17px] md:text-lg text-black leading-relaxed mb-16 max-w-sm w-full max-h-64 overflow-y-auto px-4"
           style={{
             scrollbarWidth: "thin",
             scrollbarColor: `${
