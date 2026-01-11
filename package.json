@@ -12,6 +12,7 @@
     "@splinetool/react-spline": "^4.1.0",
     "@splinetool/runtime": "^1.9.98",
     "@types/react-color": "^3.0.13",
+    "canvas-confetti": "^1.9.4",
     "firebase": "^12.7.0",
     "framer-motion": "^12.23.26",
     "lucide-react": "^0.562.0",

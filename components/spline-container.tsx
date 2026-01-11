@@ -1,6 +1,7 @@
 "use client";
 
 import { useIsMobile } from "@/hooks/use-is-mobile";
+
 import { ReactNode } from "react";
 
 interface SplineContainerProps {
@@ -13,7 +14,7 @@ export function SplineContainer({ children }: SplineContainerProps) {
   return (
     <div
       onClick={() => (window.location.href = "/")}
-      className="cursor-pointer"
+      className="cursor-pointer relative"
       style={{
         width: "100%",
         maxWidth: "300px",

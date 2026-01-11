@@ -53,6 +53,17 @@ body {
   min-height: 100dvh;
 }
 
+/* Purple text selection */
+::selection {
+  background-color: #9333ea;
+  color: #ffffff;
+}
+
+::-moz-selection {
+  background-color: #9333ea;
+  color: #ffffff;
+}
+
 /* Page Loader Animations */
 @keyframes fade-in-out {
   0%,

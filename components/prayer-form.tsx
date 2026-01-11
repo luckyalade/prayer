@@ -60,6 +60,7 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
   const handleManualColorSelect = () => {
     setSelectedColor(manualColor);
     setShowColorPicker(false);
+    document.body.classList.remove("color-picker-open");
   };
 
   const handleSubmit = async () => {
@@ -462,7 +463,10 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
           />
           {/* color picker button */}
           <div
-            onClick={() => setShowColorPicker(true)}
+            onClick={() => {
+              setShowColorPicker(true);
+              document.body.classList.add("color-picker-open");
+            }}
             className="w-full mx-auto flex flex-col gap-2 justify-center items-center mt-2 cursor-pointer"
           >
             {selectedColor ? (
@@ -516,7 +520,10 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
           className="fixed -top-[195px] pro-max:-top-44 md:-top-48 left-1/2 w-full max-w-md -translate-x-1/2 z-50 flex items-center justify-center bg-white/20 backdrop-blur-sm "
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          onClick={() => setShowColorPicker(false)}
+          onClick={() => {
+            setShowColorPicker(false);
+            document.body.classList.remove("color-picker-open");
+          }}
         >
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -528,7 +535,10 @@ export function PrayerForm({ onModeChange }: PrayerFormProps = {}) {
           >
             {/* Close Button */}
             <button
-              onClick={() => setShowColorPicker(false)}
+              onClick={() => {
+                setShowColorPicker(false);
+                document.body.classList.remove("color-picker-open");
+              }}
               className="absolute top-5 right-5 rounded-full p-2 text-black hover:bg-white/20 transition duration-300 cursor-pointer"
               aria-label="Close"
             >

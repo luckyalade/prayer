@@ -22,12 +22,13 @@ export function InfoModal({ isOpen, onClose }: InfoModalProps) {
   return createPortal(
     <AnimatePresence mode="wait">
       <motion.div
-        className=" fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm p-4"
+        className=" fixed inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm p-4"
         onClick={onClose}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, ease: "easeIn" }}
         exit={{ opacity: 0 }}
+        style={{ zIndex: 99999 }}
       >
         <div
           className="relative w-full max-w-[500px] bg-white rounded-[30px] p-8 shadow-xl animate-in fade-in zoom-in-95 duration-200"

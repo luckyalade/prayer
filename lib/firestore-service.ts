@@ -5,6 +5,10 @@ import {
   setDoc,
   getDoc,
   serverTimestamp,
+  getCountFromServer,
+  query,
+  getDocs,
+  limit,
 } from "firebase/firestore";
 
 export interface PrayerData {
@@ -73,5 +77,49 @@ export async function getPrayer(code: string): Promise<PrayerData | null> {
     throw new Error(
       "Failed to retrieve your prayer. Please check your internet connection and try again."
     );
+  }
+}
+
+/**
+ * Get the total count of prayers in Firestore
+ * @returns Promise that resolves to the prayer count
+ */
+export async function getPrayerCount(): Promise<number> {
+  try {
+    const prayersCollection = collection(db, "prayers");
+    const snapshot = await getCountFromServer(prayersCollection);
+    return snapshot.data().count;
+  } catch (error) {
+    console.error("Error getting prayer count:", error);
+    throw new Error("Failed to load prayer count.");
+  }
+}
+
+/**
+ * Get random prayers from Firestore
+ * @param limitCount - Number of prayers to fetch
+ * @returns Promise that resolves to an array of prayers
+ */
+export async function getRandomPrayers(
+  limitCount: number = 50
+): Promise<Array<{ prayer: string; color?: string }>> {
+  try {
+    const prayersCollection = collection(db, "prayers");
+    const q = query(prayersCollection, limit(limitCount));
+    const querySnapshot = await getDocs(q);
+
+    const prayers: Array<{ prayer: string; color?: string }> = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      prayers.push({
+        prayer: data.prayer || "",
+        color: data.color,
+      });
+    });
+
+    return prayers;
+  } catch (error) {
+    console.error("Error getting random prayers:", error);
+    throw new Error("Failed to load prayers.");
   }
 }

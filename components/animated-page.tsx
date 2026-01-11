@@ -1,11 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { PrayerContent } from "@/components/prayer-content";
 
 export function AnimatedPage() {
   const [isEnterClicked, setIsEnterClicked] = useState(false);
+
+  useEffect(() => {
+    console.log("Developed with ❤️ by Lucky Alade");
+  }, []);
 
   return (
     <motion.div
